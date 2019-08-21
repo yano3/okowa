@@ -1,8 +1,5 @@
 FROM golang:buster
 
-RUN apt-get update && apt-get install --no-install-recommends --no-install-suggests -y \
-    libwebp-dev
-
 RUN mkdir -p "${GOPATH}/src/github.com/yano3/okowa"
 COPY . /go/src/github.com/yano3/okowa
 
@@ -13,7 +10,6 @@ RUN cd ${GOPATH}/src/github.com/yano3/okowa \
 FROM debian:buster-slim
 
 RUN apt-get update && apt-get install --no-install-recommends --no-install-suggests -y \
-    libwebp6 \
     ca-certificates \
  \
  && apt-get clean \
