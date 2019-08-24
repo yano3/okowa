@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/chai2010/webp"
@@ -14,6 +15,7 @@ import (
 
 var client http.Client
 var orgSrvURL string
+var quality = 90
 
 func main() {
 	orgScheme := os.Getenv("ORIGIN_SCHEME")
@@ -22,6 +24,10 @@ func main() {
 		orgScheme = "https"
 	}
 	orgSrvURL = orgScheme + "://" + orgHost
+
+	if q := os.Getenv("OKOWA_QUALITY"); q != "" {
+		quality, _ = strconv.Atoi(q)
+	}
 
 	http.HandleFunc("/", webpProxy)
 	http.ListenAndServe(":8080", nil)
@@ -58,7 +64,9 @@ func webpProxy(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := webp.Encode(w, img, nil); err != nil {
+	op := webp.Options{Quality: float32(quality)}
+
+	if err := webp.Encode(w, img, &op); err != nil {
 		http.Error(w, "Image transformation failed", http.StatusInternalServerError)
 		return
 	}
