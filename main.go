@@ -2,6 +2,9 @@ package main
 
 import (
 	"fmt"
+	"image"
+	_ "image/jpeg"
+	_ "image/png"
 	"io"
 	"net/http"
 	"net/url"
@@ -10,7 +13,6 @@ import (
 	"strings"
 
 	"github.com/chai2010/webp"
-	"github.com/disintegration/imaging"
 )
 
 var client http.Client
@@ -58,7 +60,7 @@ func webpProxy(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	img, err := imaging.Decode(orgRes.Body, imaging.AutoOrientation(true))
+	img, _, err := image.Decode(orgRes.Body)
 	if err != nil {
 		http.Error(w, "Image transformation failed", http.StatusInternalServerError)
 		return
