@@ -20,8 +20,8 @@ var orgSrvURL string
 var quality = 90
 
 func main() {
-	orgScheme := os.Getenv("ORIGIN_SCHEME")
-	orgHost := os.Getenv("ORIGIN_HOST")
+	orgScheme := os.Getenv("OKOWA_ORIGIN_SCHEME")
+	orgHost := os.Getenv("OKOWA_ORIGIN_HOST")
 	if orgScheme == "" {
 		orgScheme = "https"
 	}
